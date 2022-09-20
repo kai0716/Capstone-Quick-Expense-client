@@ -1,0 +1,41 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+
+.home {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 100vh;
+    width: 100%;
+
+    @include desktop {
+        flex-direction: row;
+    }
+
+    &__wrapper {
+        height: 85%;
+
+        @include desktop {
+            background-color: $nav;
+            height: 100%;
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+    }
+
+    &__body {
+
+
+        @include desktop {
+            height: 95%;
+            width: 98%;
+            background-color: white;
+            border-radius: 50px;
+            padding: 1rem;
+        }
+    }
+}
