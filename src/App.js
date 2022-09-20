@@ -8,8 +8,8 @@ export default function App() {
     <div className="app">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/dashboard" element={<HomePage />} />
+          {/* <Route path="/" element={<LoginPage />} /> */}
+          <Route path="/" element={<HomePage />} />
         </Routes>
       </BrowserRouter>
     </div>
