@@ -1,8 +1,9 @@
 import './Avatar.scss'
+import img from '../../assets/logo/icon.png'
 
 export default function Avatar(props) {
     const { className, image, alt } = props
     return (
-        <img className={className} src={image} alt={alt} />
+        <img className="avatar" src={img} alt={alt} />
     );
 }

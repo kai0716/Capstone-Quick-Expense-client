@@ -1,0 +1,36 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+
+.modal-content {
+    height: 80vh;
+    min-height: 600px;
+    justify-content: center;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: row;
+    width: 100%
+}
+
+.form-component {
+
+    &__form {
+        @include desktop {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    }
+
+    &__receipt {
+        @include desktop {
+            width: 50%;
+        }
+    }
+}
+
+.react-datepicker-ignore-onclickoutside {
+    border-radius: 5px;
+}

@@ -1,0 +1,59 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+
+.single-upload {
+    width: 90%;
+
+    &__img {
+        @include desktop {
+            width: 100%;
+            max-width: 400px;
+            max-height: 350px;
+            object-fit: contain;
+            margin: auto;
+        }
+    }
+
+    &__img1 {
+        display: none;
+
+        &--active {
+            display: inline-block;
+            width: 450px;
+            max-height: 500px;
+            position: absolute;
+            z-index: 2;
+            left: 2%;
+            border-radius: 5px;
+            border: 5px solid red;
+        }
+    }
+
+}
+
+
+.custom-file-button {
+    input[type="file"] {
+
+
+        &::-webkit-file-upload-button {
+            display: none;
+        }
+
+        &::file-selector-button {
+            display: none;
+        }
+    }
+
+    &:hover {
+        label {
+            background-color: #dde0e3;
+            cursor: pointer;
+        }
+    }
+}
+
+.input-group {
+    width: 90%;
+    margin: auto;
+}

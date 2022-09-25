@@ -11,6 +11,7 @@ function FileUpload() {
     };
 
     const handleSubmission = () => {
+
     };
 
     return (
@@ -19,8 +20,6 @@ function FileUpload() {
             {isFilePicked ? (
                 <div>
                     <p>Filename: {selectedFile && selectedFile.name}</p>
-                    <p>Filetype: {selectedFile && selectedFile.type}</p>
-                    <p>Size in bytes: {selectedFile && selectedFile.size}</p>
                     <p>
                         lastModifiedDate:{' '}
                         {selectedFile && selectedFile.lastModifiedDate.toLocaleDateString()}
