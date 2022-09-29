@@ -1,7 +1,7 @@
 @use '../../styles/partials/mixins' as *;
 @use '../../styles/partials/variables' as *;
 
-.home {
+.expense-page {
     display: flex;
     flex-direction: column-reverse;
     height: 100vh;
@@ -35,17 +35,26 @@
             width: 98%;
             background-color: $primary-background;
             border-radius: 50px;
-            padding: 1.5rem 2rem;
+            padding: 2.5rem;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+        }
+
+        &-wrapper {
+            @include desktop {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 1rem
+            }
         }
     }
 
     &__mid {
 
         @include desktop {
-            width: 75%;
+            width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -53,70 +62,25 @@
         }
     }
 
-    &__left {
-
-        @include desktop {
-            width: 20%;
-            height: 100%;
-            background-color: $primary-light;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        &-data {
-            @include desktop {
-                height: 50%;
-            }
-        }
-    }
-
-    &__tips {
-        @include desktop {
-            height: 50%;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-        }
-
-        &-img {
-            @include desktop {
-                width: 250px;
-                height: 300px;
-                object-fit: contain;
-                margin: 2rem 0rem;
-            }
-
-        }
-    }
-
     &__expense {
 
         @include desktop {
             width: 100%;
-            height: 50%;
+            height: 100%;
             background-color: $primary-light;
             border-radius: 20px;
-            padding: 1rem;
+            overflow-y: auto;
         }
 
-        &-header {
+        &-body {
 
             @include desktop {
                 display: flex;
                 flex-direction: column;
                 width: 100%;
                 justify-content: space-between;
-                padding: 1rem;
 
             }
-        }
-
-        &-wrapper-title {
-            height: 30%;
-            width: 100%;
-            border-bottom: solid $secondary-light;
         }
 
         &-title {

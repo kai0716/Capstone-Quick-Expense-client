@@ -1,11 +1,11 @@
 @use '../../styles/partials/mixins' as *;
 @use '../../styles/partials/variables' as *;
 
-.modal-content {
-    height: 80vh;
-    min-height: 600px;
-    justify-content: center;
-}
+// .modal-content {
+//     height: 30vh;
+//     min-height: 600px;
+//     justify-content: center;
+// }
 
 .modal-body {
     display: flex;
@@ -27,6 +27,24 @@
     &__receipt {
         @include desktop {
             width: 50%;
+        }
+    }
+
+    &__img {
+        @include desktop {
+            display: flex;
+            flex-direction: row;
+            width: 90%
+        }
+    }
+
+    &__text {
+        @include desktop {
+            width: 80%;
+            height: 300px;
+            overflow-y: auto;
+            overflow-x: auto;
+            border: solid 1px black;
         }
     }
 }

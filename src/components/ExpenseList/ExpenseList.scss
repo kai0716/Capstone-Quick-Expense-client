@@ -1,0 +1,224 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+
+.expense-list__outer-wrapper {
+    background-color: $background-light;
+    width: 100%;
+}
+
+.expense-list {
+    padding: $phone-section-padding;
+    background-color: $primary-light;
+    margin: 0rem 1rem;
+    border-bottom: 1px solid $secondary-light;
+    padding: 0.5rem 0rem;
+    box-shadow: 0px 2px 5px rgba(19, 24, 44, 0.1);
+
+    @include desktop {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 0rem auto;
+
+    }
+
+    @include desktop {
+
+        margin: 0 auto;
+    }
+
+    &:first-child {
+        border-top: 1px solid $secondary-light;
+    }
+
+    &:last-child {
+        border-bottom: 0px;
+        border-radius: 0px 0px 3px 3px;
+    }
+
+    &__wrapper {
+        margin-bottom: 1rem;
+
+        &-data {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: $phone-section-padding;
+
+            @include desktop {
+                width: 86%;
+                padding: 0rem;
+            }
+
+            &-left {
+                width: 80%;
+
+                @include desktop {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: flex-start;
+                }
+            }
+        }
+
+        &-function {
+            display: flex;
+            flex-direction: column;
+
+            @include desktop {
+                padding-left: 0%;
+                width: 15%;
+                align-items: center;
+            }
+        }
+    }
+
+    &__action {
+        display: none;
+
+        @include desktop {
+            width: 100%;
+            display: flex;
+            text-align: end;
+            display: none;
+            // height: 45%;
+            // text-align: center;
+            // line-height: 1rem;
+        }
+    }
+
+    &__functions {
+        display: flex;
+        justify-content: space-between;
+        padding: $phone-section-padding;
+
+        @include desktop {
+            width: 70%;
+            padding: 2rem 1rem;
+            padding-bottom: 0%;
+            height: 100%;
+        }
+
+        &-img {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+    }
+
+
+    &__group {
+        padding-bottom: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        @include desktop {
+            padding: 0rem;
+        }
+
+        &-left {
+            @include desktop {
+                width: 100%;
+                height: 100%;
+
+            }
+        }
+    }
+
+    &__title {
+        text-transform: uppercase;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 11px;
+        line-height: 16px;
+        margin: 0rem;
+        padding: 0.5rem 0rem;
+
+        @include desktop {
+            background-color: $background-light;
+            padding: 1rem 1rem;
+            display: none;
+        }
+
+        &-sort {
+            display: none;
+
+            @include desktop {
+                display: inline-block;
+                // position: absolute;
+
+                width: 1rem;
+                transform: translate(50%, 30%);
+            }
+        }
+    }
+
+
+    &__value {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 20px;
+        margin: 0rem;
+
+        @include desktop {
+            display: flex;
+            justify-self: center;
+            padding: 1rem 1rem;
+
+        }
+    }
+
+    &__receipt {
+        width: 100px;
+        height: 100px;
+    }
+
+    &__name {
+        font-family: 'Titillium Web';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 20px;
+        color: $primary-accent;
+    }
+
+    &:nth-of-type(1) {
+
+        @include desktop {
+            .expense-list__title {
+                display: inline-block;
+            }
+
+            .expense-list__group-right {
+                justify-content: space-between;
+            }
+
+            .expense-list__group-left {
+                justify-content: space-between;
+            }
+        }
+    }
+}
+
+.sort-fun {
+    opacity: -1;
+}
+
+.delete-modal {
+
+    @include desktop {
+        max-height: 300px;
+    }
+
+    &__body {
+        @include desktop {
+            height: 100%
+        }
+    }
+}

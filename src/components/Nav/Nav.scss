@@ -9,7 +9,7 @@
 
     @include desktop {
         height: 100%;
-        width: 15%;
+        width: 20%;
         border-top-left-radius: 50px;
         border-bottom-left-radius: 50px;
         display: flex;
@@ -30,7 +30,10 @@
     &__avatar {
 
         @include desktop {
-            height: 25%;
+            margin: auto;
+            margin-top: 4rem;
+            height: 15%;
+            width: 50%;
         }
 
     }

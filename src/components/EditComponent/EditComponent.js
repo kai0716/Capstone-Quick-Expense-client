@@ -1,5 +1,5 @@
 import "react-datepicker/dist/react-datepicker.css";
-import './FormComponent.scss'
+import './EditComponent.scss'
 
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
@@ -11,55 +11,60 @@ import axios from "axios";
 
 import ImageUpload from '../../components/ImageUpload/ImageUpload'
 
-function FormComponent(props) {
-    const { categoryList, setExpenseListFn } = props
+function EditComponent(props) {
+    const { categoryList, editIcon, setExpenseListFn, expenseid } = props
     //state for modal on/off
     const [modalShow, setModalShow] = useState(false);
-    const handleModelClose = () => {
-        setModalShow(false);
-        setAmount(0);
-        setGst(0)
-        setPst(0)
-        setStartDate(new Date())
-        setText("");
-    }
+    const handleModelClose = () => { setModalShow(false) }
     const handleModalShow = () => setModalShow(true);
 
     const [amount, setAmount] = useState(0);
-    const [category, setCategory] = useState("Entertainment");
+    const [category, setCategory] = useState("Grocery");
     const [note, setNote] = useState("");
     const [text, setText] = useState("");
     const [gst, setGst] = useState(0);
     const [pst, setPst] = useState(0);
+    const [receipt, setReceipt] = useState(null);
+    const [checkList, setCheckList] = useState(null)
 
-
-    useEffect(() => {
-        console.log(note)
-    }, [note])
-    // state for selected file
-    const [selectedFile, setSelectedFile] = useState(null);
 
     // state for date
     const [startDate, setStartDate] = useState(new Date());
-    // useEffect(() => {
-    //     let date = new Date(startDate);
-    //     if (date) {
-    //         let utcDate = new Date(date.toUTCString());
-    //         utcDate.setHours(utcDate.getHours() - 7);
-    //         let caDate = new Date(utcDate).toISOString().slice(0, 19).replace('T', ' ');
-    //     }
-    // }, [startDate])
+
+    useEffect(() => {
+        axios.get(`http://localhost:5050/expense/${expenseid}`)
+            .then((response) => {
+
+                setAmount(response.data.amount)
+                setCategory(response.data.category)
+                setGst(response.data.gst)
+                setPst(response.data.pst)
+                setNote(response.data.note)
+                setStartDate(new Date(response.data.date))
+                setReceipt(`http://localhost:5050/${response.data.receipt}`)
+            })
+            .catch(err => console.log(err))
+    }, [setModalShow])
 
     // handler for submiting a expense
     const onsubmit = (event) => {
+        console.log("editDatass:", expenseid)
         let date = new Date(startDate);
         let utcDate = new Date(date.toUTCString());
         utcDate.setHours(utcDate.getHours() - 7);
         let caDate = new Date(utcDate);
-        console.log(event.target.note)
-        if (!amount || !selectedFile || !date || !note) {
+        const obj = {
+            amount: amount,
+            pst: pst,
+            gst: gst,
+            note: note,
+            category: category,
+            date: caDate.toISOString().slice(0, 19).replace('T', ' ')
+        }
+        console.log(caDate.toISOString().slice(0, 19).replace('T', ' '))
+        if (!amount || !category || !date || !note || !gst || !pst) {
             handleModalShow();
-            alert("Invaild information");
+            alert("Invaild information Edit");
 
         }
         else if (pst < 0 || gst < 0 || amount < 0) {
@@ -70,15 +75,9 @@ function FormComponent(props) {
         else if (amount < gst || amount < pst) {
             handleModalShow();
             alert("Your tax value is higher then your total amount");
-
         }
-        else if (note === "") {
-            handleModalShow();
-            alert("Please enter somenote");
 
-        }
         else {
-            handleModelClose();
             if (note === undefined) {
                 setNote("")
             }
@@ -88,24 +87,17 @@ function FormComponent(props) {
             if (pst === undefined) {
                 setPst(0)
             }
-
-            console.log("PST:", pst)
-            const data = new FormData();
-            data.append('user_id', parseInt(localStorage.getItem("user")));
-            data.append('amount', amount);
-            data.append('pst', pst);
-            data.append('gst', gst);
-            data.append('note', note);
-            data.append('receipt', selectedFile);
-            data.append('category', category);
-            data.append('date', caDate.toISOString().slice(0, 19).replace('T', ' '));
-            console.log(data, "ADD")
-
-            axios.post(`http://localhost:5050/expense`, data
+            handleModelClose();
+            axios.put(`http://localhost:5050/expense/${expenseid}`, obj
             ).then((response) => {
-                console.log(response.data);
                 getDB();
             }).catch(err => console.log(err))
+
+            // axios.get(`http://localhost:5050/expense`)
+            //     .then((response) => {
+            //         setCheckList(response.data)
+            //     })
+            //     .catch(err => console.log(err))
         }
 
     };
@@ -121,10 +113,11 @@ function FormComponent(props) {
                     return new Date(b.date) - new Date(a.date);
                 });
                 setExpenseListFn(newList);
-                console.log(newList, "FormComponent");
+                console.log(newList, "Edit component");
             })
             .catch(err => console.log(err))
     }
+
 
     const [switchButton, setSwitchButton] = useState("off");
     const cropSwitch = () => {
@@ -136,10 +129,20 @@ function FormComponent(props) {
         }
     }
 
+    const [zoom, setZoom] = useState(false);
+    // Image zoom in and out
+    const zoomTrue = () => {
+        setZoom(true)
+    };
+    const zoomFalse = () => {
+        setZoom(false)
+    };
+
     return (
         <div className='form-component'>
-            <a className='home__expense-btn btn btn-primary btn-md btn-block' onClick={handleModalShow}>Add Expense</a>
-
+            <a onClick={handleModalShow}>
+                <img src={editIcon} alt="edit" />
+            </a>
             <Modal show={modalShow} onHide={handleModelClose} size='xl'>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
@@ -148,21 +151,8 @@ function FormComponent(props) {
 
                     <div className="form-component__receipt">
                         <div className="form-component__img">
-                            {/* <Button className={`cropButton--${switchButton}`} onClick={cropSwitch}>
-                                Crop {switchButton}
-                            </Button> */}
-                            <ImageUpload
-                                passSelectedFile={(file) => { setSelectedFile(file) }}
-                                setAmount={setAmount}
-                                setText={setText}
-                                setGst={setGst}
-                                setPst={setPst}
-                                setStartDate={setStartDate}
-                                switchButton={switchButton}
-                            />
-                            <div className="form-component__text">
-                                <p>{text}</p>
-                            </div>
+                            <img src={receipt} className='single-upload__img' onClick={zoomTrue}></img>
+                            <img className={`${zoom === true ? 'single-upload__img1--active' : 'single-upload__img1'}`} alt='upload image' src={receipt} onClick={zoomFalse} />
                         </div>
                     </div>
                     <Form className="form-component__form">
@@ -171,8 +161,8 @@ function FormComponent(props) {
                             <Form.Control
                                 placeholder={0}
                                 autoFocus
-                                onChange={(event) => { setAmount(event.target.value) }}
-                                value={amount === 0 ? '' : amount}
+                                onChange={(event) => { setAmount(parseFloat(event.target.value)) }}
+                                value={amount}
                                 type='number'
                                 name="amount"
                             />
@@ -183,8 +173,8 @@ function FormComponent(props) {
                             <Form.Control
                                 placeholder={0}
                                 autoFocus
-                                onChange={(event) => { setGst(event.target.value) }}
-                                value={gst === 0 ? '' : gst}
+                                onChange={(event) => { setGst(parseFloat(event.target.value)) }}
+                                value={gst === 0 ? 0 : gst}
                                 type='number'
                                 name="gst"
                             />
@@ -195,8 +185,8 @@ function FormComponent(props) {
                             <Form.Control
                                 placeholder={0}
                                 autoFocus
-                                onChange={(event) => { setPst(event.target.value) }}
-                                value={pst === 0 ? '' : pst}
+                                onChange={(event) => { setPst(parseFloat(event.target.value)) }}
+                                value={pst === 0 ? 0 : pst}
                                 type='number'
                                 name="pst"
                             />
@@ -204,7 +194,7 @@ function FormComponent(props) {
 
                         <Form.Group>
                             <Form.Label>Category</Form.Label>
-                            <Form.Select aria-label="Default select example" name="category" onChange={(event) => { setCategory(event.target.value) }}>
+                            <Form.Select aria-label="Default select example" name="category" value={category === "Entertainment" ? "Entertainment" : category} onChange={(event) => { setCategory(event.target.value) }}>
                                 {categoryList && categoryList.map(element => {
                                     return <option key={element.id}>{element.title}</option>
                                 }
@@ -214,7 +204,7 @@ function FormComponent(props) {
 
                         <Form.Group >
                             <Form.Label>Note</Form.Label>
-                            <Form.Control as="textarea" rows={3} name="note" onChange={(event) => { setNote(event.target.value) }} />
+                            <Form.Control as="textarea" rows={3} name="note" onChange={(event) => { setNote(event.target.value) }} value={note === "" || note === undefined ? "" : note} />
                         </Form.Group>
 
                         <Form.Group >
@@ -234,4 +224,4 @@ function FormComponent(props) {
     );
 }
 
-export default FormComponent
+export default EditComponent

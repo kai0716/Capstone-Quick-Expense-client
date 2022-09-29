@@ -31,6 +31,11 @@
 
 }
 
+.ReactCrop {
+    width: 100%;
+    max-width: 400px;
+    max-height: 350px;
+}
 
 .custom-file-button {
     input[type="file"] {
