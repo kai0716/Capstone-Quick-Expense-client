@@ -16,7 +16,7 @@
         height: 85%;
 
         @include desktop {
-            background-image: linear-gradient(to bottom right, #A59ACA, #8ABCD1);
+            background-image: linear-gradient(to bottom right, #8ABCD1, #A59ACA);
             height: 100%;
             width: 100%;
             display: flex;
@@ -34,7 +34,7 @@
             height: 95%;
             width: 98%;
             // background-color: $primary-background;
-            background-image: linear-gradient(to bottom right, rgb(249, 207, 214), rgb(241, 133, 241));
+            background-image: linear-gradient(to bottom right, rgb(249, 207, 214), rgb(219, 148, 219));
             border-radius: 50px;
             padding: 1.5rem 2rem;
             display: flex;

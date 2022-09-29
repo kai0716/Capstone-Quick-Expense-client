@@ -16,7 +16,7 @@
         height: 85%;
 
         @include desktop {
-            background-image: linear-gradient(to bottom right, #A59ACA, #8ABCD1);
+            background-image: linear-gradient(to bottom right, #8ABCD1, #A59ACA);
             height: 100%;
             width: 100%;
             display: flex;

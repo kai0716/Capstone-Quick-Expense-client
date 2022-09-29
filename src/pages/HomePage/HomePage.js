@@ -171,8 +171,15 @@ function HomePage() {
 
                     return newDate === monthList;
                 })
+                const yearExpCate = monthExpCate.filter((e) => {
+                    const yearList = new Date(e.date).getFullYear();
+                    const newDate = new Date().getFullYear();
 
-                monthExpCate.forEach(element => {
+                    return newDate === yearList;
+                })
+
+
+                yearExpCate.forEach(element => {
                     total = total + element.amount
                 });
                 const obj = { category: `${cate.title}`, total: parseFloat(total) }
@@ -185,8 +192,13 @@ function HomePage() {
                 sumTotal = sumTotal + parseFloat(temp[i].total);
             }
             for (let i in temp) {
-                let tempValue = temp[i].total / sumTotal * 100;
-                temp[i].sum = tempValue.toFixed(2);
+                if (sumTotal !== 0) {
+                    let tempValue = temp[i].total / sumTotal * 100;
+                    temp[i].sum = tempValue.toFixed(2);
+                }
+                else {
+                    temp[i].sum = 0;
+                }
             }
             setMontyleSpending(temp)
         }
