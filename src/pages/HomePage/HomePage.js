@@ -1,8 +1,6 @@
 import './HomePage.scss'
 import Nav from '../../components/Nav/Nav'
 import RadarChartComponent from '../../components/RadarChartComponent/RadarChartComponent'
-import FileUpload from '../../components/FileUpload/FileUpload'
-import FormComponent from '../../components/FormComponent/FormComponent'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import tip from '../../assets/image/tip.svg'
@@ -10,8 +8,10 @@ import BarChartComponent from '../../components/BarChartComponent/BarChartCompon
 import entertain from '../../assets/icons/cat4.svg'
 import lifestyle from '../../assets/icons/cat3.svg'
 import housing from '../../assets/icons/cat2.svg'
-import food from '../../assets/icons/cat1.svg'
-import transport from '../../assets/icons/cat0.svg'
+import food from '../../assets/icons/cat0.svg'
+import transport from '../../assets/icons/cat1.svg'
+import { Button, ProgressBar } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 function HomePage() {
     console.log(localStorage.getItem("user"))
@@ -95,8 +95,25 @@ function HomePage() {
                     totalAmount = totalAmount + (e.amount - e.gst - e.pst);
                     totalGst = totalGst + e.gst;
                     totalPst = totalPst + e.pst
-                    date = e.date
+                    date = new Date(e.date).toLocaleDateString()
                 })
+
+
+                // if (dayList.length === 0) {
+                //     const currentDay = new Date().getDay();
+                //     const current = new Date();
+                //     let diff = parseInt(Math.abs(currentDay - i));
+
+                //     if (currentDay >= i) {
+                //         const temp1 = current.getDate() - diff;
+                //         date = new Date(temp1).toLocaleDateString();
+                //         console.log("CHECK", current.getDate(), diff)
+                //     }
+                //     else {
+                //         const temp2 = current.getDate() + diff;
+                //         date = new Date(temp2).toLocaleDateString();
+                //     }
+                // }
 
                 const obj = {
                     subtotal: totalAmount,
@@ -117,22 +134,67 @@ function HomePage() {
     }, [expenseList]);
 
     // today list
-
     const [todayExpList, setTodayExpList] = useState([])
     useEffect(() => {
         if (expenseList) {
-            const tempList = expenseList.map((e) => e)
-
-            const todayList = tempList.filter((e) => {
-                const today = new Date().getDay;
-                const elementDay = new Date(e.date).getDay;
-
-                return today === elementDay;
+            const tempList = expenseList.filter((e) => {
+                const newDate = new Date().toLocaleDateString();
+                const eDate = new Date(e.date).toLocaleDateString();
+                console.log(e.date, eDate === newDate, newDate);
+                return eDate === newDate;
             })
 
-            setTodayExpList(todayList)
+            setTodayExpList(tempList)
         }
+
     }, [expenseList]);
+    console.log(todayExpList, "TDF")
+
+    //view all button
+    const navigate = useNavigate();
+    const viewAll = () => {
+        navigate('/expense')
+    }
+
+    const [montlySpending, setMontyleSpending] = useState([])
+    const [montlySpendingTotal, setMontyleSpendingTotal] = useState([])
+    useEffect(() => {
+        const data = [];
+        if (categoryList) {
+            categoryList.forEach(cate => {
+                const expenseCategory = expenseList.filter((e) => e.category === cate.title)
+                let total = 0;
+
+                const monthExpCate = expenseCategory.filter((e) => {
+                    const monthList = new Date(e.date).getMonth();
+                    const newDate = new Date().getMonth();
+
+                    return newDate === monthList;
+                })
+
+                monthExpCate.forEach(element => {
+                    total = total + element.amount
+                });
+                const obj = { category: `${cate.title}`, total: parseFloat(total) }
+                data.push(obj)
+            });
+            let sumTotal = 0;
+            const temp = data.map(obj => ({ ...obj, sum: 0 }))
+
+            for (let i in temp) {
+                sumTotal = sumTotal + parseFloat(temp[i].total);
+            }
+            for (let i in temp) {
+                let tempValue = temp[i].total / sumTotal * 100;
+                temp[i].sum = tempValue.toFixed(2);
+            }
+            setMontyleSpending(temp)
+        }
+
+
+    }, [expenseList]);
+    console.log(montlySpending, "HHH");
+
 
     return (
         <div className='home'>
@@ -144,10 +206,11 @@ function HomePage() {
 
                         <div className='home__wrapper-data'>
                             <div className='home__data home__data1'>
+                                <p style={{ textAlign: 'center', fontSize: "0.8125rem" }}>Week Record</p>
                                 <BarChartComponent data={barData} />
                             </div>
                             <div className='home__data home__data2'>
-
+                                <p style={{ textAlign: 'center', fontSize: "0.8125rem" }}>History Record</p>
                                 <RadarChartComponent radarData={radarData} />
 
                             </div>
@@ -156,19 +219,34 @@ function HomePage() {
                         <div className='home__expense'>
                             <div className='home__expense-nav'>
                                 <div className='home__expense-header'>
-                                    <div className="home__expense-wrapper-title">
-                                        <h2 className='home__expense-title'>Today, Thursday, 29 Sep</h2>
-                                        {todayExpList && todayExpList.map((e) => {
-                                            <div key={e.id} className="home__item">
-                                                <div className='home__item-img'>
-                                                    {/* <img src={category[e.category]} /> */}
-                                                </div>
-                                            </div>
-                                        })}
-                                    </div>
+                                    <div className="home__expense-wrapper">
+                                        <div className='home__expense-wrapper-title'>
+                                            <h2 className='home__expense-title'>Today, Thursday, 29 Sep</h2>
+                                            <Button variant="dark" onClick={() => { viewAll() }}>
+                                                View All
+                                            </Button>
+                                        </div>
+                                        <div className='home__item-list'>
+                                            {todayExpList && todayExpList.map((e) => (
+                                                <div key={e.id} className="home__item">
+                                                    <div className='home__item-content'>
+                                                        <img className="home__item-img" src={e.category === "Entertainment" ? entertain
+                                                            : e.category === "Housing" ? housing
+                                                                : e.category === "Food and Drinks" ? food
+                                                                    : e.category === "Transportation" ? transport
+                                                                        : e.category === "Lifestyle" ? lifestyle : ''}
+                                                        />
+                                                        <div className="home__item-wrapper">
+                                                            <p className='home__item-text'>{e.category}</p>
+                                                            <p className='home__item-subtext'> {e.note}</p>
+                                                        </div>
 
-                                    <div className="home__expense-wrapper-title">
-                                        <h2 className='home__expense-title'>Yesterday, Wednesday, 28 Sep </h2>
+                                                        <p className='home__item-text-amount'>-${e.amount}</p>
+
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
 
                                 </div>
@@ -177,9 +255,20 @@ function HomePage() {
                     </div>
                     <div className='home__left'>
                         <div className='home__left-data'>
-                            <h2 style={{ width: '70%', textAlign: 'center', margin: "auto", paddingTop: '0.5rem' }}>Your spending on this month</h2>
-                            <p></p>
-
+                            <h2 style={{ width: '70%', textAlign: 'center', margin: "auto", paddingTop: '0.5rem' }}>Your spending on September</h2>
+                            <div className='home__left-data-content'>
+                                {montlySpending && montlySpending.map((element, i) =>
+                                (
+                                    <div className='home__left-data-text'>
+                                        <div className='home__left-month'>
+                                            <p key={i}>{element.category}</p>
+                                            <p>${element.total}</p>
+                                        </div>
+                                        <ProgressBar variant="success" now={element.sum} label={`${element.sum}%`} />
+                                    </div>
+                                )
+                                )}
+                            </div>
                         </div>
                         <div className='home__tips'>
                             <img className='home__tips-img' src={tip} alt='tips' />

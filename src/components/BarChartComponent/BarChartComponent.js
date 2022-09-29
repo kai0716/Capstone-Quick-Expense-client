@@ -14,7 +14,7 @@ import { ResponsiveContainer } from 'recharts'
 export default function BarChartComponent(props) {
     const { data } = props;
     return (
-        <ResponsiveContainer width="95%" height="100%">
+        <ResponsiveContainer width="95%" height="80%">
             <BarChart
                 data={data}
                 margin={{

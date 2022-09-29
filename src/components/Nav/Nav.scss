@@ -4,7 +4,8 @@
 .nav {
     height: 15%;
     background-color: $nav;
-    color: $primary-light;
+    // color: $primary-light;
+    background-image: linear-gradient(to bottom left, #A59ACA, #8ABCD1);
 
 
     @include desktop {

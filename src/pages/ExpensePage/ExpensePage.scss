@@ -16,7 +16,7 @@
         height: 85%;
 
         @include desktop {
-            background-color: $nav;
+            background-image: linear-gradient(to bottom right, #A59ACA, #8ABCD1);
             height: 100%;
             width: 100%;
             display: flex;
@@ -33,7 +33,7 @@
         @include desktop {
             height: 95%;
             width: 98%;
-            background-color: $primary-background;
+            background-image: linear-gradient(to bottom right, rgb(249, 207, 214), rgb(241, 133, 241));
             border-radius: 50px;
             padding: 2.5rem;
             display: flex;
