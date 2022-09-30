@@ -182,7 +182,7 @@ function HomePage() {
                 yearExpCate.forEach(element => {
                     total = total + element.amount
                 });
-                const obj = { category: `${cate.title}`, total: parseFloat(total) }
+                const obj = { category: `${cate.title}`, total: parseFloat(total).toFixed(2) }
                 data.push(obj)
             });
             let sumTotal = 0;
@@ -195,6 +195,7 @@ function HomePage() {
                 if (sumTotal !== 0) {
                     let tempValue = temp[i].total / sumTotal * 100;
                     temp[i].sum = tempValue.toFixed(2);
+                    console.log(temp[i].sum, "TEST!)")
                 }
                 else {
                     temp[i].sum = 0;

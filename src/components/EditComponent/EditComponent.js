@@ -19,7 +19,7 @@ function EditComponent(props) {
     const handleModalShow = () => setModalShow(true);
 
     const [amount, setAmount] = useState(0);
-    const [category, setCategory] = useState("Grocery");
+    const [category, setCategory] = useState("Entertainment");
     const [note, setNote] = useState("");
     const [text, setText] = useState("");
     const [gst, setGst] = useState(0);
@@ -62,7 +62,7 @@ function EditComponent(props) {
             date: caDate.toISOString().slice(0, 19).replace('T', ' ')
         }
         console.log(caDate.toISOString().slice(0, 19).replace('T', ' '))
-        if (!amount || !category || !date || !note || !gst || !pst) {
+        if (!amount || !category || !note) {
             handleModalShow();
             alert("Invaild information Edit");
 

@@ -14,8 +14,8 @@ function RadarChartComponent(props) {
     return (
         <ResponsiveContainer width="95%" height="100%">
             <RadarChart
-                cx={150}
-                cy={125}
+                cx={160}
+                cy={120}
                 outerRadius={85}
                 data={radarData}
             >
