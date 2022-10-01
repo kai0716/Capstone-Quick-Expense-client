@@ -9,8 +9,6 @@ import DatePicker from 'react-datepicker';
 import { useEffect } from "react";
 import axios from "axios";
 
-import ImageUpload from '../../components/ImageUpload/ImageUpload'
-
 function EditComponent(props) {
     const { categoryList, editIcon, setExpenseListFn, expenseid } = props
     //state for modal on/off
@@ -21,11 +19,9 @@ function EditComponent(props) {
     const [amount, setAmount] = useState(0);
     const [category, setCategory] = useState("Entertainment");
     const [note, setNote] = useState("");
-    const [text, setText] = useState("");
     const [gst, setGst] = useState(0);
     const [pst, setPst] = useState(0);
     const [receipt, setReceipt] = useState(null);
-    const [checkList, setCheckList] = useState(null)
 
 
     // state for date
@@ -46,7 +42,7 @@ function EditComponent(props) {
             .catch(err => console.log(err))
     }, [setModalShow])
 
-    // handler for submiting a expense
+    // handler for edit, submit a expense
     const onsubmit = (event) => {
         console.log("editDatass:", expenseid)
         let date = new Date(startDate);
@@ -93,11 +89,6 @@ function EditComponent(props) {
                 getDB();
             }).catch(err => console.log(err))
 
-            // axios.get(`http://localhost:5050/expense`)
-            //     .then((response) => {
-            //         setCheckList(response.data)
-            //     })
-            //     .catch(err => console.log(err))
         }
 
     };

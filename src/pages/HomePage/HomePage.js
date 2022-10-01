@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom'
 
 function HomePage() {
     console.log(localStorage.getItem("user"))
-    const [user, setUser] = useState(null)
     const [expenseList, setExpenseList] = useState(null)
     const [categoryList, setCategory] = useState(null)
 
@@ -98,7 +97,7 @@ function HomePage() {
                     date = new Date(e.date).toLocaleDateString()
                 })
 
-
+                // Code for making the day of the bar chart in right order 
                 // if (dayList.length === 0) {
                 //     const currentDay = new Date().getDay();
                 //     const current = new Date();
@@ -133,44 +132,80 @@ function HomePage() {
         setBarData(data.reverse())
     }, [expenseList]);
 
-    // today list
+    // today expense list 
     const [todayExpList, setTodayExpList] = useState([])
+    const [todayDay, setTodayDay] = useState('');
     useEffect(() => {
+        let weekDay = {
+            1: 'Monday',
+            2: 'Tuesday',
+            3: 'Wednesday',
+            4: 'Thursday',
+            5: 'Friday',
+            6: 'Saturday',
+            0: 'Sunday'
+        }
         if (expenseList) {
+            //filter out all the expenses that has the same date string to today's date string
             const tempList = expenseList.filter((e) => {
                 const newDate = new Date().toLocaleDateString();
                 const eDate = new Date(e.date).toLocaleDateString();
-                console.log(e.date, eDate === newDate, newDate);
                 return eDate === newDate;
             })
 
             setTodayExpList(tempList)
+            if (tempList.length != 0) {
+                const date = new Date(tempList[0].date);
+                const day = date.getDay()
+                setTodayDay(weekDay[day] + " " + date.toLocaleDateString())
+            }
         }
 
     }, [expenseList]);
     console.log(todayExpList, "TDF")
 
-    //view all button
+    //  button for view all
     const navigate = useNavigate();
     const viewAll = () => {
         navigate('/expense')
     }
 
+    // Get list of expenses of the month
     const [montlySpending, setMontyleSpending] = useState([])
-    const [montlySpendingTotal, setMontyleSpendingTotal] = useState([])
+    const [thisMonth, setThisMonth] = useState('September')
     useEffect(() => {
         const data = [];
+        let months = {
+            0: 'January',
+            1: 'Feburay',
+            2: 'March',
+            3: 'April',
+            4: 'May',
+            5: 'June',
+            6: 'July',
+            7: 'Augest',
+            8: 'September',
+            9: 'October',
+            10: 'November',
+            11: 'December',
+        }
         if (categoryList) {
+            //Filter out all the expenses to the corresponding category list
             categoryList.forEach(cate => {
                 const expenseCategory = expenseList.filter((e) => e.category === cate.title)
                 let total = 0;
 
+                //filter out all the expenses in the category list that are in the same month
                 const monthExpCate = expenseCategory.filter((e) => {
-                    const monthList = new Date(e.date).getMonth();
+                    const month = new Date(e.date).getMonth();
                     const newDate = new Date().getMonth();
 
-                    return newDate === monthList;
+                    //set current month
+                    setThisMonth(months[newDate])
+                    return newDate === month;
                 })
+
+                //filter out all the expenses in the category list in the same month that are also in the same year
                 const yearExpCate = monthExpCate.filter((e) => {
                     const yearList = new Date(e.date).getFullYear();
                     const newDate = new Date().getFullYear();
@@ -178,13 +213,17 @@ function HomePage() {
                     return newDate === yearList;
                 })
 
-
+                // calcuate all the sum of amount of the month expense list 
                 yearExpCate.forEach(element => {
                     total = total + element.amount
                 });
+                // push the sum of month expenses with its category title to the arraylist
                 const obj = { category: `${cate.title}`, total: parseFloat(total).toFixed(2) }
                 data.push(obj)
+
             });
+
+            // Function to turn the total amount to percentage for the ProgressBar
             let sumTotal = 0;
             const temp = data.map(obj => ({ ...obj, sum: 0 }))
 
@@ -234,7 +273,7 @@ function HomePage() {
                                 <div className='home__expense-header'>
                                     <div className="home__expense-wrapper">
                                         <div className='home__expense-wrapper-title'>
-                                            <h2 className='home__expense-title'>Today, Thursday, 29 Sep</h2>
+                                            <h2 className='home__expense-title'>{todayDay}</h2>
                                             <Button variant="dark" onClick={() => { viewAll() }}>
                                                 View All
                                             </Button>
@@ -268,11 +307,11 @@ function HomePage() {
                     </div>
                     <div className='home__left'>
                         <div className='home__left-data'>
-                            <h2 style={{ width: '70%', textAlign: 'center', margin: "auto", paddingTop: '0.5rem' }}>Your spending on September</h2>
+                            <h2 style={{ width: '70%', textAlign: 'center', margin: "auto", paddingTop: '0.5rem' }}>Your spending on {thisMonth}</h2>
                             <div className='home__left-data-content'>
                                 {montlySpending && montlySpending.map((element, i) =>
                                 (
-                                    <div className='home__left-data-text'>
+                                    <div key={i} className='home__left-data-text'>
                                         <div className='home__left-month'>
                                             <p key={i}>{element.category}</p>
                                             <p>${element.total}</p>
@@ -295,14 +334,3 @@ function HomePage() {
 }
 
 export default HomePage
-
-{/* <h1>Logo</h1>
-
-
-<FileUpload /> */}
-
-
-        // axios.put(`http://localhost:5050/expense/5`, data
-        // ).then((response) => {
-        //     getDB();
-        // }).catch(err => console.log(err))

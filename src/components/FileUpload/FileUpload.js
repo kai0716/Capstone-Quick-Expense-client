@@ -1,6 +1,7 @@
 import { useState } from "react";
 import './FileUpload'
 
+// Allow user to upload an pdf, not implement yet
 function FileUpload() {
     const [selectedFile, setSelectedFile] = useState();
     const [isFilePicked, setIsFilePicked] = useState(false);

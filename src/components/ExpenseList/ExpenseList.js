@@ -16,6 +16,7 @@ function ExpenseList(props) {
     // true = descending false = asscending
     const [sortDate, setSortDate] = useState(true);
 
+    // sorting function for clicking the icon beside the title "date"
     const sortDateHandler = () => {
 
         if (sortDate === true) {

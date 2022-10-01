@@ -9,7 +9,6 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function ExpensePage() {
     console.log(localStorage.getItem("user"))
-    const [user, setUser] = useState(null)
     const [expenseList, setExpenseList] = useState(null)
     const [categoryList, setCategory] = useState(null)
 
@@ -39,7 +38,7 @@ function ExpensePage() {
 
     }, []);
 
-    const [checked, setChecked] = useState(false);
+    // Filter function for expenses in 24hours , 7days, and 30days
     const [radioValue, setRadioValue] = useState('1');
 
     const radios = [
@@ -48,8 +47,6 @@ function ExpensePage() {
         { name: '7 Days', value: '3' },
         { name: '30 Days', value: '4' },
     ];
-
-
     const dateHandler = (radioValue) => {
         if (radioValue === '1') {
             axios.get(`http://localhost:5050/expense/user/${localStorage.getItem("user")}`)

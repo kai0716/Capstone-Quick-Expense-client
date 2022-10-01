@@ -41,16 +41,8 @@ function FormComponent(props) {
 
     // state for date
     const [startDate, setStartDate] = useState(new Date());
-    // useEffect(() => {
-    //     let date = new Date(startDate);
-    //     if (date) {
-    //         let utcDate = new Date(date.toUTCString());
-    //         utcDate.setHours(utcDate.getHours() - 7);
-    //         let caDate = new Date(utcDate).toISOString().slice(0, 19).replace('T', ' ');
-    //     }
-    // }, [startDate])
 
-    // handler for submiting a expense
+    // handler for adding, submiting a expense
     const onsubmit = (event) => {
         let date = new Date(startDate);
         let utcDate = new Date(date.toUTCString());
@@ -109,6 +101,7 @@ function FormComponent(props) {
         }
 
     };
+    // calls by the sumbit handler after data submited - to request the latest updated expenses list from the database
     const getDB = () => {
         axios.get(`http://localhost:5050/expense/user/${localStorage.getItem("user")}`)
             .then((response) => {
@@ -120,6 +113,7 @@ function FormComponent(props) {
                 newList.sort(function (a, b) {
                     return new Date(b.date) - new Date(a.date);
                 });
+                //pass the latest updated expenses list to the top parent.
                 setExpenseListFn(newList);
                 console.log(newList, "FormComponent");
             })
