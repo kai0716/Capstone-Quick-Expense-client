@@ -1,6 +1,8 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+https://user-images.githubusercontent.com/32262412/195463076-39e92fa0-e31f-45d1-81bb-a1d8b4e02c8c.mov
+
+# Getting Started
 
 ## After clone the repository run:
 
@@ -9,11 +11,8 @@ to install the dependencies
 
 ## Then you can run:
 
+#### Note: Clone the server beofore running the app.
 ### `npm start`
 
-Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
