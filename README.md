@@ -11,7 +11,7 @@ to install the dependencies
 
 ## Then you can run:
 
-#### Note: Clone the server beofore running the app.
+#### Note: Clone the Capstone-Quick-Expense-client beofore running the app.
 ### `npm start`
 
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
